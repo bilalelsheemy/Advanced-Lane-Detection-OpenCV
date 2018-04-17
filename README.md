@@ -40,7 +40,7 @@
    - To demonstrate this step, I will describe how I apply the distortion correction to one of the test images like this one:
       - 1. I applied this distortion correction to the test image using the cv2.undistort() function and obtained this result:
          <figure>
-          <img src="DistortedImg.png" width="876" height="500" alt="DistortedImg" />
+          <img src="DistortedImg.png" width="940" height="340" alt="DistortedImg" />
           <figcaption>
           <p></p> 
           </figcaption>
