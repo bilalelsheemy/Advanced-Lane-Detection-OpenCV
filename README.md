@@ -23,7 +23,7 @@
 
 - **Camera Calibration**
    - 1. I’ve used 17 image of the chess board calibration images to collect corner points in order to use these points together with the object points in the camera calibration.
-      - I start by preparing "object points", which will be the (x, y, z) coordinates of the chessboard corners in the world. Here I am assuming the chessboard is fixed on the (x, y) plane at z=0, such that the object points are the same for each calibration image. Thus, objp is just a replicated array of coordinates, and objpoints will be appended with a copy of it every time I successfully detect all chessboard corners in a calibration image. imgpoints will be appended with the (x, y) pixel position of each of the corners in the image plane with each successful chessboard detection.
+      - I started by preparing "object points", which will be the (x, y, z) coordinates of the chessboard corners in the world. Here I am assuming the chessboard is fixed on the (x, y) plane at z=0, such that the object points are the same for each calibration image. Thus, objp is just a replicated array of coordinates, and objpoints will be appended with a copy of it every time I successfully detect all chessboard corners in a calibration image. imgpoints will be appended with the (x, y) pixel position of each of the corners in the image plane with each successful chessboard detection.
       - I then used the output objpoints and imgpoints.
    - 2. Using cv2.calibrateCamera API I got the camera matrix & distortion coeffs which are needed for the un-distortion step next, please look for my own API “camera_calibrate()” implemented for this purpose.(Note: You’ll find a sufficient demonstration about it in the related markdown and code comments).
    
@@ -39,24 +39,30 @@
    - **1. Provide an example of a distortion-corrected image.**
    - To demonstrate this step, I will describe how I apply the distortion correction to one of the test images like this one:
       - 1. I applied this distortion correction to the test image using the cv2.undistort() function and obtained this result:
+         <figure>
+          <img src="DistortedImg.png" width="876" height="500" alt="DistortedImg" />
+          <figcaption>
+          <p></p> 
+          </figcaption>
+         </figure>
 ---      
    - **2. Describe how (and identify where in your code) you used color transforms, gradients or other methods to create a thresholded binary image.** 
    - Provide an example of a binary image result.
    - I used a combination of color and gradient thresholds to generate a binary image.
    - Here’re the preprocessing related APIs in my pipeline:
-      1- abs_sobel_thresh()
+      - 1- abs_sobel_thresh()
          - Applies sobel operator in X or Y direction, and returns a binary masked image.
-      2- mag_thresh()
+      - 2- mag_thresh()
          - Determine the sobel in X or Y direction magnitude and returns a binary masked image.
-      3- dir_threshold()
+      - 3- dir_threshold()
          - Applies the sobel direction filter iand returns a binary masked image.
-      4- grad_combine()
+      - 4- grad_combine()
          - Combine selectable variety of the above listed gradients and returns a binary masked image.
-      5- hls_select()
+      - 5- hls_select()
          - Extract selectable H,L,S channels of the image and returns a binary masked image (In our case I’ve combined L & S channels as this combination removed a lot of noise from the gradient binary image).   
-      6- grad_hls_combine()
+      - 6- grad_hls_combine()
          - Combines between HLS & gradient previous selections (In our case a combination of sobel X operator is done with L,S channels combination) and returns a binary masked image.
-      7- frame_processor()
+      - 7- frame_processor()
          - This is the high level (Wrapper/Interface) function which calls each of:
          
          - 7.1- Undistortion API.
@@ -137,7 +143,7 @@
           <p></p> 
           </figcaption>
          </figure>
-         
+---         
    - **5. Describe how (and identify where in your code) you calculated the radius of curvature of the lane and the position of the vehicle with respect to center.**
       - Looking at the notebook you’ll find the following API:
       -**lane_curvature()**
@@ -146,8 +152,8 @@
          - 2- Printing the determined value out on the video frame.
          - 3- Determining the average shifting space of the current vehicle center from the lane center line -assuming that the vehicle center is aligned with image center- through determining it on different random sets of left & right detections and get the average of these values.
          - 4- Printing the determined value out on the video frame.
-         
-   - **4. Provide an example image of your result plotted back down onto the road such that the lane area is identified clearly.**
+---         
+   - **6. Provide an example image of your result plotted back down onto the road such that the lane area is identified clearly.**
    
       <figure>
        <img src="Heading.png" width="1072" alt="" />
@@ -155,11 +161,11 @@
        <p></p> 
        </figcaption>
       </figure>
-      
+---      
 ## Discussion
 
    - **1. Briefly discuss any problems / issues you faced in your implementation of this project. Where will your pipeline likely fail? What could you do to make it more robust?**
-      Okay! Let me point out some of the major problems I suffered from during implementation and tuning:
+      - Okay! Let me point out some of the major problems I suffered from during implementation and tuning:
          - 1- Detections Smoothing:
             I’ve really put lot of effort and time to implement lane_detect_withSMOOTHING() API and ended up not using it at all as it didn’t seem to add a big enhancement to the pipeline also due to the penalty of errors it showed during its developing due to the sizes and shapes conflicts that’s why I ended up not using it.
          - 2- Sanity Checks Failure:
