@@ -156,7 +156,7 @@
    - **6. Provide an example image of your result plotted back down onto the road such that the lane area is identified clearly.**
    
       <figure>
-       <img src="Heading.png" width="1072" alt="" />
+       <img src="Heading.png" width="1000" height="600" alt="" />
        <figcaption>
        <p></p> 
        </figcaption>
